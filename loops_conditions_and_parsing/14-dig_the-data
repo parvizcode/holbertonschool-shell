@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
 # Apache log dosyasından IP ve HTTP kodlarını gruplayıp sıralar
 
-awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -nr | awk '{print $1, $2, $3}'
+if [ ! -f "apache-access.log" ] || [ ! -s "apache-access.log" ]; then
+    exit 0  # Dosya yoksa veya boşsa hiçbir şey yazdırma
+fi
+
+awk '
+    {
+        count[$1 " " $9]++
+    }
+    END {
+        for (combination in count) {
+            print count[combination], combination
+        }
+    }
+' apache-access.log | sort -k1,1nr -k2,2
