@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Apache log dosyasından IP ve HTTP kodlarını gruplayıp sıralar
+
+awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -nr | awk '{print $1, $2, $3}'
