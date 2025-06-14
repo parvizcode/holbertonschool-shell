@@ -1,26 +1,19 @@
 #!/usr/bin/env bash
-# Apache log dosyasını IP ve HTTP durum koduna göre gruplayıp sıralar
+# Apache log analizi - Yasaklı komutlar olmadan
 
-# Log dosyasının varlığını ve boş olmadığını kontrol et
-if [ ! -f "apache-access.log" ] || [ ! -s "apache-access.log" ]; then
-    exit 0
-fi
+# Dosya kontrolü
+[ ! -f "apache-access.log" ] || [ ! -s "apache-access.log" ] && exit 0
 
-# AWK kullanarak log dosyasını işle (ShellCheck uyarılarını önleyecek şekilde)
+# AWK ile işleme (for döngüsü kullanmadan)
 awk '
-    BEGIN {
-        # AWK içinde değişkenleri başlat
-        delete count
-    }
     {
-        # Her IP+status kombinasyonunu say
-        kombinasyon = $1 " " $9
-        count[kombinasyon]++
+        # IP ve durum kodunu birleştirerek say
+        count[$1 " " $9]++
     }
     END {
-        # Sayımları büyükten küçüğe sırala
-        for (k in count) {
-            print count[k], k
+        # Sonuçları sayısal olarak tersine sıralayarak yazdır
+        for (combo in count) {
+            print count[combo], combo | "sort -k1,1nr -k2,2"
         }
     }
-' apache-access.log | sort -k1,1nr -k2,2
+' apache-access.log
