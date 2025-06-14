@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
-# Apache log analizi - Yasaklı komutlar olmadan
+# Apache log analizi - Döngüsüz, yasaklı komutsuz
 
 # Dosya kontrolü
 [ ! -f "apache-access.log" ] || [ ! -s "apache-access.log" ] && exit 0
 
-# AWK ile işleme (for döngüsü kullanmadan)
-awk '
-    {
-        # IP ve durum kodunu birleştirerek say
-        count[$1 " " $9]++
-    }
-    END {
-        # Sonuçları sayısal olarak tersine sıralayarak yazdır
-        for (combo in count) {
-            print count[combo], combo | "sort -k1,1nr -k2,2"
-        }
-    }
-' apache-access.log
+# IP ve status kodunu al, say ve sıralı yazdır
+awk '{ print $1, $9 }' apache-access.log | sort | uniq -c | sort -nr
+
