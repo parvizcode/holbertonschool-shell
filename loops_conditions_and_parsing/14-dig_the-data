@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
-# Daha basit çözüm (for döngüsü olmadan)
+# Apache log dosyasını IP ve HTTP durum koduna göre gruplayıp sıralar
 
+# Log dosyasının varlığını ve boş olmadığını kontrol et
+if [ ! -f "apache-access.log" ] || [ ! -s "apache-access.log" ]; then
+    exit 0
+fi
+
+# AWK kullanarak log dosyasını işle (ShellCheck uyarılarını önleyecek şekilde)
 awk '
+    BEGIN {
+        # AWK içinde değişkenleri başlat
+        delete count
+    }
     {
-        count[$1 " " $9]++
+        # Her IP+status kombinasyonunu say
+        kombinasyon = $1 " " $9
+        count[kombinasyon]++
     }
     END {
-        for (combo in count) {
-            print count[combo], combo | "sort -k1,1nr -k2,2"
+        # Sayımları büyükten küçüğe sırala
+        for (k in count) {
+            print count[k], k
         }
     }
-' apache-access.log 2>/dev/null
+' apache-access.log | sort -k1,1nr -k2,2
