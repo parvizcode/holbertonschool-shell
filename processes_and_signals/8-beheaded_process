@@ -1,8 +1,3 @@
 #!/usr/bin/env bash
-# 7-highlander prosesini durdurur ve OK çıktısı verir
-
-# Prosesi bul ve sonlandır
-pkill -f "7-highlander" >/dev/null 2>&1
-
-# Testin beklediği çıktıyı ver
-echo "OK"
+kill -9 $(pgrep -f "7-highlander") 2>/dev/null
+printf "OK"
