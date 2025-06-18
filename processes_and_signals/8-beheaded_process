@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-kill -9 $(pgrep -f "7-highlander") 2>/dev/null
+# Kill 7-highlander process and output exactly "OK"
+
+# Forcefully kill the process and suppress all output
+pkill -9 -f "7-highlander" >/dev/null 2>&1
+
+# Print exactly "OK" with no extra characters or newlines
 printf "OK"
