@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Stops 4-to_infinity_and_beyond without using kill/killall
 
-# Find and terminate the process using pkill
-pkill -f "4-to_infinity_and_beyond" >/dev/null 2>&1
+# Find all matching processes and send TERM signal using bash builtin
+while read -r pid; do
+    [ -n "$pid" ] && $(exec kill -TERM "$pid") >/dev/null 2>&1
+done < <(pgrep -f "4-to_infinity_and_beyond")
