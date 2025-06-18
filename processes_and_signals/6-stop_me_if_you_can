@@ -3,5 +3,5 @@
 
 # Find all matching processes and send TERM signal using bash builtin
 while read -r pid; do
-    [ -n "$pid" ] && $(exec kill -TERM "$pid") >/dev/null 2>&1
+    [ -n "$pid" ] && exec kill -TERM "$pid" >/dev/null 2>&1
 done < <(pgrep -f "4-to_infinity_and_beyond")
