@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 # Creates PID file, handles signals, and displays messages
 
+# Create PID directory if it doesn't exist
+sudo mkdir -p /var/run/
+sudo chmod 777 /var/run/
+
 # Create PID file
 echo $$ > /var/run/myscript.pid
+chmod 644 /var/run/myscript.pid
 
 # Signal handlers
-trap 'echo "I hate the kill command"; rm -f /var/run/myscript.pid; exit' SIGTERM
-trap 'echo "Y U no love me?!"; rm -f /var/run/myscript.pid; exit' SIGINT
-trap 'rm -f /var/run/myscript.pid; exit' SIGQUIT
+trap 'echo "I hate the kill command"; sudo rm -f /var/run/myscript.pid; exit' SIGTERM
+trap 'echo "Y U no love me?!"; sudo rm -f /var/run/myscript.pid; exit' SIGINT
+trap 'sudo rm -f /var/run/myscript.pid; exit' SIGQUIT
 
 # Main loop
 while true; do
