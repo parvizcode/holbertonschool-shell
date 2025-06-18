@@ -1,4 +1,5 @@
 #!/usr/bin/env bash 
+# This script prints a message every 2 seconds and handles SIGTERM
 
 trap 'echo "I am invincible!!!"' SIGTERM
 
