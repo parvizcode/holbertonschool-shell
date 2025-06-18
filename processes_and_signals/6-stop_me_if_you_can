@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-# Stop 4-to_infinity_and_beyond without kill commands
-pid=$(pgrep -f "4-to_infinity_and_beyond")
-[ -n "$pid" ] && kill -TERM "$pid"
+# Stops 4-to_infinity_and_beyond without using kill/killall
+
+# Find and terminate the process using pkill
+pkill -f "4-to_infinity_and_beyond" >/dev/null 2>&1
